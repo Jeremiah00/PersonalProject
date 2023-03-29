@@ -18,8 +18,10 @@ public class MovePlayer : MonoBehaviour
 
     Rigidbody rb;
     public Transform orientation;
-    public float moveSpeed;
-
+    private float moveSpeed;
+    public float runningSpeed;
+    public float walkingSpeed;
+    
     Vector3 moveDirection;
     public float JumpForce;
     public float airMultiplier;
@@ -39,7 +41,7 @@ public class MovePlayer : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
         SpeedLimit();
 
-        if (Input.GetKeyDown(KeyCode.Space) && grounded)
+        if (Input.GetKey(KeyCode.Space) && grounded)
             Jump();
 
 
@@ -56,15 +58,19 @@ public class MovePlayer : MonoBehaviour
     void FixedUpdate()
     {
         Movement();
+        MoveState();
     }
+
     void Movement()
     {
         moveDirection = orientation.forward * verticalInput + orientation.right * horziontalInput;
         if (grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+            
 
         else if (!grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
+            
     }
     void Jump()
     {
@@ -80,6 +86,15 @@ public class MovePlayer : MonoBehaviour
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
             rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
+    }
+
+    void MoveState()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+            moveSpeed = runningSpeed;
+
+        else
+            moveSpeed = walkingSpeed;
     }
     
 
