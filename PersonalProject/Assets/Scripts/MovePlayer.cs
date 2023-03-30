@@ -9,7 +9,7 @@ public class MovePlayer : MonoBehaviour
     //Stuff for checking the ground 
     public float Playerheight;
     public float groundDrag;
-    public bool grounded;
+    bool grounded;
     public LayerMask Ground;
 
     //For my inputs
@@ -18,7 +18,7 @@ public class MovePlayer : MonoBehaviour
 
     Rigidbody rb;
     public Transform orientation;
-    public float moveSpeed;
+    private float moveSpeed;
     public float runningSpeed;
     public float walkingSpeed;
     
