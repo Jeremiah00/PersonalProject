@@ -9,7 +9,7 @@ public class MovePlayer : MonoBehaviour
     //Stuff for checking the ground 
     public float Playerheight;
     public float groundDrag;
-    bool grounded;
+    public bool grounded;
     public LayerMask Ground;
 
     //For my inputs
@@ -18,7 +18,7 @@ public class MovePlayer : MonoBehaviour
 
     Rigidbody rb;
     public Transform orientation;
-    private float moveSpeed;
+    public float moveSpeed;
     public float runningSpeed;
     public float walkingSpeed;
     
@@ -41,8 +41,9 @@ public class MovePlayer : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
         SpeedLimit();
 
-        if (Input.GetKey(KeyCode.Space) && grounded)
+        if (Input.GetKeyDown(KeyCode.Space) && grounded)
             Jump();
+            //grounded = false;
 
 
         if (grounded)
