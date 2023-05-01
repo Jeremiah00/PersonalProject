@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MovePlayer : MonoBehaviour
 {
@@ -11,6 +13,10 @@ public class MovePlayer : MonoBehaviour
     public float groundDrag;
     bool grounded;
     public LayerMask Ground;
+    public LayerMask Ceiling;
+    bool ceiling;
+
+    public TextMeshPro speedText;
 
     //For my inputs
     float horziontalInput;
@@ -25,10 +31,15 @@ public class MovePlayer : MonoBehaviour
     Vector3 moveDirection;
     public float JumpForce;
     public float airMultiplier;
+    public float crounchSpeed;
+    float startYScale;
+    float crounchYScale;
     void Start()
     {
         
         rb = GetComponent<Rigidbody>();
+        startYScale = transform.localScale.y;
+        crounchYScale = startYScale / 2;
     }
 
     // Update is called once per frame
@@ -36,7 +47,7 @@ public class MovePlayer : MonoBehaviour
     {
         // Fires raycast down to find if we are grounded
         grounded = Physics.Raycast(transform.position, Vector3.down, Playerheight * 0.5f + 0.2f, Ground);
-
+        ceiling = Physics.Raycast(transform.position, Vector3.up, Playerheight * 0.5f + 0.2f, Ceiling);
         horziontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
         SpeedLimit();
@@ -45,6 +56,16 @@ public class MovePlayer : MonoBehaviour
             Jump();
             //grounded = false;
 
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            transform.localScale = new Vector3(transform.localScale.x, crounchYScale, transform.localScale.z);
+        }
+        else if(Input.GetKeyUp(KeyCode.C))
+        {
+            if(!ceiling)
+                transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+                rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+        }
 
         if (grounded)
         {
@@ -94,8 +115,14 @@ public class MovePlayer : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
             moveSpeed = runningSpeed;
 
+        if (Input.GetKey(KeyCode.C))
+        {
+            moveSpeed = crounchSpeed;
+        }
+
         else
             moveSpeed = walkingSpeed;
+        
     }
     
 
