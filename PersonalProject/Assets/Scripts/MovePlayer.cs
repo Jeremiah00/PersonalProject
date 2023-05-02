@@ -16,7 +16,7 @@ public class MovePlayer : MonoBehaviour
     public LayerMask Ceiling;
     bool ceiling;
 
-    public TextMeshPro speedText;
+    public TextMeshProUGUI speedText;
 
     //For my inputs
     float horziontalInput;
@@ -50,6 +50,7 @@ public class MovePlayer : MonoBehaviour
         ceiling = Physics.Raycast(transform.position, Vector3.up, Playerheight * 0.5f + 0.2f, Ceiling);
         horziontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
+        SpeedTracker();
         SpeedLimit();
 
         if (Input.GetKeyDown(KeyCode.Space) && grounded)
@@ -59,12 +60,14 @@ public class MovePlayer : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.C))
         {
             transform.localScale = new Vector3(transform.localScale.x, crounchYScale, transform.localScale.z);
+            moveSpeed = crounchSpeed;
         }
         else if(Input.GetKeyUp(KeyCode.C))
         {
             if(!ceiling)
                 transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
                 rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+            moveSpeed = walkingSpeed;
         }
 
         if (grounded)
@@ -115,14 +118,16 @@ public class MovePlayer : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
             moveSpeed = runningSpeed;
 
-        if (Input.GetKey(KeyCode.C))
-        {
-            moveSpeed = crounchSpeed;
-        }
+       
 
         else
             moveSpeed = walkingSpeed;
         
+    }
+
+    void SpeedTracker()
+    {
+        speedText.text = "Speed " + moveSpeed;
     }
     
 

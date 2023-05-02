@@ -1092,7 +1092,7 @@ MonoBehaviour:
   Ceiling:
     serializedVersion: 2
     m_Bits: 64
-  speedText: {fileID: 0}
+  speedText: {fileID: 1115195261}
   orientation: {fileID: 286178807}
   runningSpeed: 14
   walkingSpeed: 7
