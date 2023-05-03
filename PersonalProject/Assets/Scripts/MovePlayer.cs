@@ -12,6 +12,7 @@ public class MovePlayer : MonoBehaviour
     public float Playerheight;
     public float groundDrag;
     bool grounded;
+    public float gravityModifier;
     public LayerMask Ground;
     public LayerMask Ceiling;
     bool ceiling;
@@ -34,12 +35,15 @@ public class MovePlayer : MonoBehaviour
     public float crounchSpeed;
     float startYScale;
     float crounchYScale;
+    public float maxAngle;
+    RaycastHit slopeHit;
     void Start()
     {
         
         rb = GetComponent<Rigidbody>();
         startYScale = transform.localScale.y;
         crounchYScale = startYScale / 2;
+        Physics.gravity *= gravityModifier;
     }
 
     // Update is called once per frame
@@ -69,6 +73,18 @@ public class MovePlayer : MonoBehaviour
                 rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
             moveSpeed = walkingSpeed;
         }
+
+        if (OnSlope())
+        {
+            rb.AddForce(GetSlopeDirection() * moveSpeed * 1f, ForceMode.Force);
+
+            if(rb.velocity.y > 0)
+            {
+                rb.AddForce(Vector3.down * 8f, ForceMode.Force);
+            }
+        }
+
+        rb.useGravity = !OnSlope();
 
         if (grounded)
         {
@@ -130,6 +146,20 @@ public class MovePlayer : MonoBehaviour
         speedText.text = "Speed " + moveSpeed;
     }
     
+    bool OnSlope()
+    {
+        if(Physics.Raycast(transform.position, Vector3.down, out slopeHit, Playerheight * 0.5f + 0.3f))
+        {
+            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return angle < maxAngle && angle != 0;
+        }
+        return false;
+    }
+
+    Vector3 GetSlopeDirection()
+    {
+        return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
+    }
 
 
 }
