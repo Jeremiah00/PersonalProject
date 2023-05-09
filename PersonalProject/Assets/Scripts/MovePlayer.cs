@@ -35,6 +35,7 @@ public class MovePlayer : MonoBehaviour
     public float crounchSpeed;
     float startYScale;
     float crounchYScale;
+    bool crounching;
     public float maxAngle;
     RaycastHit slopeHit;
     void Start()
@@ -65,13 +66,16 @@ public class MovePlayer : MonoBehaviour
         {
             transform.localScale = new Vector3(transform.localScale.x, crounchYScale, transform.localScale.z);
             moveSpeed = crounchSpeed;
+            crounching = true;
         }
+
         else if(Input.GetKeyUp(KeyCode.C))
         {
             if(!ceiling)
                 transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
                 rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
-            moveSpeed = walkingSpeed;
+                moveSpeed = walkingSpeed;
+                crounching = false;
         }
 
         if (OnSlope())
@@ -82,6 +86,13 @@ public class MovePlayer : MonoBehaviour
             {
                 rb.AddForce(Vector3.down * 8f, ForceMode.Force);
             }
+            else if (crounching && rb.velocity.y == 0)
+            {
+                rb.drag = 0;
+                rb.AddForce(Vector3.down * 8f, ForceMode.Force);
+                rb.AddForce(moveDirection.normalized * 100f, ForceMode.Force);
+            }
+           
         }
 
         rb.useGravity = !OnSlope();
