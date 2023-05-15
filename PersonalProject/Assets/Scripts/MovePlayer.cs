@@ -56,7 +56,8 @@ public class MovePlayer : MonoBehaviour
         horziontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
         SpeedTracker();
-        SpeedLimit();
+        if (!crounching)
+            SpeedLimit();
 
         if (Input.GetKeyDown(KeyCode.Space) && grounded)
             Jump();
@@ -89,8 +90,8 @@ public class MovePlayer : MonoBehaviour
             else if (crounching && rb.velocity.y == 0)
             {
                 rb.drag = 0;
-                rb.AddForce(Vector3.down * 8f, ForceMode.Force);
-                rb.AddForce(moveDirection.normalized * 100f, ForceMode.Force);
+                rb.AddForce(Vector3.down * 10f, ForceMode.Force);
+                rb.AddForce(moveDirection.normalized * moveSpeed * 50f, ForceMode.Force);
             }
            
         }
