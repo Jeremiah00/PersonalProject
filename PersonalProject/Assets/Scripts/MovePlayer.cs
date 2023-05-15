@@ -16,7 +16,6 @@ public class MovePlayer : MonoBehaviour
     public LayerMask Ground;
     public LayerMask Ceiling;
     bool ceiling;
-    bool crouching = false;
 
     public TextMeshProUGUI speedText;
 
@@ -57,11 +56,7 @@ public class MovePlayer : MonoBehaviour
         horziontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
         SpeedTracker();
-        if (!crouching)
-        {
-            SpeedLimit();
-        }
-        
+        SpeedLimit();
 
         if (Input.GetKeyDown(KeyCode.Space) && grounded)
             Jump();
@@ -71,11 +66,7 @@ public class MovePlayer : MonoBehaviour
         {
             transform.localScale = new Vector3(transform.localScale.x, crounchYScale, transform.localScale.z);
             moveSpeed = crounchSpeed;
-<<<<<<< Updated upstream
             crounching = true;
-=======
-            crouching = true;
->>>>>>> Stashed changes
         }
 
         else if(Input.GetKeyUp(KeyCode.C))
@@ -84,11 +75,7 @@ public class MovePlayer : MonoBehaviour
                 transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
                 rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
                 moveSpeed = walkingSpeed;
-<<<<<<< Updated upstream
                 crounching = false;
-=======
-                crouching = false;
->>>>>>> Stashed changes
         }
 
         if (OnSlope())
@@ -97,17 +84,8 @@ public class MovePlayer : MonoBehaviour
 
             if(rb.velocity.y > 0)
             {
-                if (crouching)
-                {
-                    rb.AddForce(Vector3.down * 20f, ForceMode.Force);
-                    
-                }
-                else
-                {
-                    rb.AddForce(Vector3.down * 8f, ForceMode.Force);
-                }
+                rb.AddForce(Vector3.down * 8f, ForceMode.Force);
             }
-<<<<<<< Updated upstream
             else if (crounching && rb.velocity.y == 0)
             {
                 rb.drag = 0;
@@ -115,9 +93,6 @@ public class MovePlayer : MonoBehaviour
                 rb.AddForce(moveDirection.normalized * 100f, ForceMode.Force);
             }
            
-=======
-
->>>>>>> Stashed changes
         }
 
         rb.useGravity = !OnSlope();
