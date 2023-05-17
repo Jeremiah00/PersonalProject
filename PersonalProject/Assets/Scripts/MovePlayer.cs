@@ -27,7 +27,10 @@ public class MovePlayer : MonoBehaviour
     public Transform orientation;
     private float moveSpeed;
     public float runningSpeed;
+    bool running;
     public float walkingSpeed;
+    public bool wallRuning = false;
+    public float wallRunSpeed;
     
     Vector3 moveDirection;
     public float JumpForce;
@@ -61,7 +64,14 @@ public class MovePlayer : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && grounded)
             Jump();
-            //grounded = false;
+        //grounded = false;
+
+        if (Input.GetKey(KeyCode.LeftShift))
+            running = true;
+        else
+        {
+            running = false;
+        }
 
         if(Input.GetKeyDown(KeyCode.C))
         {
@@ -143,7 +153,7 @@ public class MovePlayer : MonoBehaviour
 
     void MoveState()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (running)
             moveSpeed = runningSpeed;
 
        

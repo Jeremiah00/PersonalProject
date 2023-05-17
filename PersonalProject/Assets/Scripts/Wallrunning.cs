@@ -57,12 +57,19 @@ public class Wallrunning : MonoBehaviour
 
     void StartWallRun()
     {
-
+        mp.wallRuning = true;
     }
 
     void WallRunMovement()
     {
+        rb.useGravity = false;
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
 
+        Vector3 wallNormal = RightWall ? rightWallhit.normal : leftWallhit.normal;
+
+        Vector3 wallForward = Vector3.Cross(wallNormal, transform.up);
+
+        rb.AddForce(wallForward * 10f, ForceMode.Force);
     }
 
     void StopWallRun()
