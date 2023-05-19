@@ -100,7 +100,7 @@ public class MovePlayer : MonoBehaviour
             else if (crounching && rb.velocity.y == 0)
             {
                 rb.drag = 0;
-                rb.AddForce(Vector3.down * 10f, ForceMode.Force);
+                rb.AddForce(Vector3.down * 20f, ForceMode.Force);
                 rb.AddForce(moveDirection.normalized * moveSpeed * 50f, ForceMode.Force);
             }
            
@@ -155,6 +155,11 @@ public class MovePlayer : MonoBehaviour
     {
         if (running)
             moveSpeed = runningSpeed;
+
+        else if (wallRuning)
+        {
+            moveSpeed = wallRunSpeed;
+        }
 
        
 
