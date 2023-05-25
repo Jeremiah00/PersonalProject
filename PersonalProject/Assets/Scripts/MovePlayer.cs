@@ -13,8 +13,6 @@ public class MovePlayer : MonoBehaviour
     public float groundDrag;
     bool grounded;
     public float gravityModifier;
-    public LayerMask Ground;
-    public LayerMask Ceiling;
     bool ceiling;
 
     public TextMeshProUGUI speedText;
@@ -54,8 +52,8 @@ public class MovePlayer : MonoBehaviour
     void Update()
     {
         // Fires raycast down to find if we are grounded
-        grounded = Physics.Raycast(transform.position, Vector3.down, Playerheight * 0.5f + 0.2f, Ground);
-        ceiling = Physics.Raycast(transform.position, Vector3.up, Playerheight * 0.5f + 0.2f, Ceiling);
+        grounded = Physics.Raycast(transform.position, Vector3.down, Playerheight * 0.5f + 0.2f);
+        ceiling = Physics.Raycast(transform.position, Vector3.up, Playerheight * 0.5f + 0.2f);
         horziontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
         SpeedTracker();
